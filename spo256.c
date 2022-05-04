@@ -2,12 +2,17 @@
  * SPO256 -AL2 
  * samples from https://www.cpcwiki.eu/index.php/SP0256_Allophones
  * 
+ * Pico code Derek Woodroffe 4/5/2022
+ *
  */
 
+//pico SDK includes
 #include <stdio.h>
 #include "pico/stdlib.h"
-#include "allophones.c"
 #include "hardware/pwm.h"
+
+//program includes
+#include "allophones.c"
 #include "allophoneDefs.h"
 
 //must be pins on the same slice
@@ -31,10 +36,10 @@ void PlayAllophone(int al){
 
 }
 
-void PlayAllophones(uint8_t *list,int listlength){
+void PlayAllophones(uint8_t *alist,int listlength){
    int a;
    for(a=0;a<listlength;a++){
-     PlayAllophone(list[a]);
+     PlayAllophone(alist[a]);
    }
 }
 
@@ -62,15 +67,16 @@ void SetPWM(void){
 int main() {
     stdio_init_all();
     SetPWM();
-        
-    uint8_t list[] ={AR,PA5,SS,SS,IY,PA5,TT2,WH,EH,EH,NN1,PA2,PA3,TT2,IY,PA5,FF,OR,PA3,TT2,IY,PA5};
+    
+    uint8_t alist[] ={HH,EH,LL,AX,OW,PA5,WW,OR,LL,DD1};
+    //uint8_t alist[] ={AR,PA5,SS,SS,IY,PA5,TT2,WH,EH,EH,NN1,PA2,PA3,TT2,IY,PA5,FF,OR,PA3,TT2,IY,PA5};
 
     printf("Starting");
 
-    while(1){    
-        PlayAllophones(list,sizeof(list));
-        sleep_ms(500);
-    }
+    PlayAllophones(alist,sizeof(alist));
+    
+//wait....
+    while(1);
 
 
 }//main

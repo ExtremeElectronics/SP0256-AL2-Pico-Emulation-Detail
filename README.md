@@ -2,6 +2,10 @@
 From wav samples from the origional chip available at https://www.cpcwiki.eu/index.php/SP0256_Allophones
 Origional Chip data sheet in Additional folder
 
+## GPIO
+You need two pins on the same slice (currently 14/15) I invert one so you can put a small speaker directly across them.
+Much better quality can be gained by using an amplifier and a simple filter.
+
 ## Sound Files
 All sound files are embedded in allophones.c as byte wide bitstreams. This make uploading them easy, plus as they are code, so they don't use any ram
 

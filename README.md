@@ -2,7 +2,7 @@
 From wav samples from the origional chip available at https://www.cpcwiki.eu/index.php/SP0256_Allophones
 Origional Chip data sheet in Additional folder
 
-##Sound Files
+## Sound Files
 All sound files are embedded in allophones.c as byte wide bitstreams. This make uploading them easy, plus as they are code, so they don't use any ram
 
 Adjusted lengths have been calculated as the origionals are (mostly) longer then they aught to be. 
@@ -12,3 +12,5 @@ Adjusted play lengths are in allophonesizeCorrected[]
 ## Enumeration
 allophoneDefs.h contains the allophone names from the data sheet as an innumeration to make making lists of allophones easier. 
 
+## Making speach
+Look through the origional data sheet. String together allophones. send them (with a length) to  PlayAllophones Simple.... ish :) 

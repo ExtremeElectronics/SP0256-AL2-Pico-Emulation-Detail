@@ -1,3 +1,19 @@
+/*
+##################################################################################
+#                                                                                #
+#  Rules and Exceptions for Emulation of the CTS256_AL2                          #
+#  From the "rules" and "excptions" published on GitHub                          # 
+#                                                                                #
+#  RULES from https://github.com/GmEsoft/CTS256A-AL2/ and extracted from         #
+#  the origional CTS256 Chip                                                     #
+#                                                                                #
+#  Exceptions array from  https://github.com/mecparts/CTS256-exceptions          #
+#                                                                                #
+#  Compiles and converted to array format                                        #
+#  Derek Woodroffe - Extreme Kits - extkits.co.uk -  20-8-2006                   #
+#                                                                                #
+##################################################################################
+*/
 
 #include <stdio.h>
 #include <stdint.h>
@@ -95,11 +111,6 @@ $	1F	Not a pattern symbol, ignored by the ROM
 		
 */
 
-/* 
-  RULES from https://github.com/GmEsoft/CTS256A-AL2/ and extracted from the origional CTS256 Chip
-
-  Exceptions array from  https://github.com/mecparts/CTS256-exceptions 
-*/
 
 char Vowels[]={'A','E','I','O','U',0};
 char VoicedConsonants[]={'B','D','G','J','L','M','N','R','V','W','X',0};
@@ -252,7 +263,7 @@ struct Rule Rules[450]={
 {'E',0xF98D,"#:[E]D<",{0}},
 {'E',0xF993,"[EV]ER",{EH1,VV1,0}},
 {'E',0xF998,"#*[EL]",{EL1,0}},
-{'E',0xF99C,"[ERI]#","[YR IY1]"},
+{'E',0xF99C,"[ERI]#",{YR1,IY1,0}},
 {'E',0xF9A1,"#:[ER]#",{ER1,0}},
 {'E',0xF9A6,"[E]^%",{IY1,0}},
 {'E',0xF9AA,"[ERI]",{EH1,EH1,RR1,IH1,0}},
@@ -692,6 +703,7 @@ struct ExeptStruc RuleExceptions[]={
 	{"MINUTES",{MM1,IH1,NN1,AX1,TT2,ZZ1,0}}, // MINUTES
 	{"MISSILE",{MM1,IH1,SS1,AX1,LL1,0}}, // MISSILE
 	{"MISSILES",{MM1,IH1,SS1,AX1,LL1,ZZ1,0}}, // MISSILES
+	{"ME",{MM1,EH1,0}}, // ME
 	{"MODEM",{MM1,OW1,DD2,AX1,MM1,0}}, // MODEM
 	{"MODES",{MM1,OW1,DD2,ZZ1,0}}, // MODES
 	{"MODIFIED",{MM1,AA1,DD2,AX1,FF1,AY1,PA2,DD1,0}}, // MODIFIED
@@ -730,8 +742,9 @@ struct ExeptStruc RuleExceptions[]={
 	{"WIND",{WW1,IH1,NN1,PA3,DD1,0}}, // WIND1,(noun)
 	{"WINDOW",{WW1,IH1,NN1,PA3,DD1,OW1,0}}, // WINDOW
 	{"WINDOWS",{WW1,IH1,NN1,PA3,DD1,OW1,ZZ1,0}}, // WINDOWS
-	{"YOU'D",{YY2,UW2,Pa1,DD1,0}}, // YOU'D
 	{"YOU'RE",{YY2,OR1,0}}, //YOU'RE
+	{"YOUR",{YY2,OR1,0}}, //YOUR
+	{"YOU",{YY2,UW2,0}}, // YOU	
 	{"Z80",{ZZ1,EH1,Pa1,DD1,PA3,EY1,PA3,TT2,IY1,0}}, // Z80
 	{"Z80A",{ZZ1,EH1,Pa1,DD1,PA3,EY1,PA3,TT2,IY1,PA3,EY1,0}}, // Z80A
 	{"&",{AE1,NN1,DD1,0}}, //AND

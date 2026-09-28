@@ -1,28 +1,32 @@
-cmake_minimum_required(VERSION 3.18)
+cmake_minimum_required(VERSION 3.13)
 
-include(pico_sdk_import.cmake)
+include (pico_sdk_import.cmake)
+project (z80spo256al2 C CXX ASM)
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
+set(SIMPLE_VGA_PATH ${PROJECT_SOURCE_DIR})
 
-project(spo256 C CXX ASM)
+pico_sdk_init()
+add_executable(z80spo256al2
+)
 
-    add_executable(spo256
-            spo256.c
-            )
+pico_generate_pio_header(z80spo256al2  ${CMAKE_CURRENT_LIST_DIR}/z80io.pio)
+target_sources(z80spo256al2  PRIVATE z80spo256al2.c)
 
-    pico_sdk_init()
 
-    # pull in common dependencies
-    target_link_libraries(spo256 pico_stdlib hardware_gpio hardware_pwm)
+target_link_libraries(z80spo256al2  PRIVATE
+        pico_stdlib
+        hardware_pio
+	hardware_dma
+	pico_multicore
+	hardware_gpio
+	hardware_pwm
+)
 
-    # enable usb output, disable uart output
-    pico_enable_stdio_usb(spo256 1)
-    pico_enable_stdio_uart(spo256 0)
+pico_enable_stdio_usb(z80spo256al2  1)
+pico_enable_stdio_uart(z80spo256al2  0)
 
-    # create map/bin/hex/uf2 file etc.
-    pico_add_extra_outputs(spo256)
-
-    # add url via pico_set_program_url
-    #example_auto_set_url(spo256)
-
+pico_add_extra_outputs(z80spo256al2 )
 
 
 

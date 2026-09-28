@@ -1,3 +1,19 @@
+
+/*
+##################################################################################
+#                                                                                #
+#  Emulation of the CTS256_AL2                                                   #
+#  Code to processs the "rules" and "excptions" published on GitHub              #
+#  Details of the sources and credits on the associated rules_array.c            #
+#                                                                                #
+#  Derek Woodroffe - Extreme Kits - extkits.co.uk -  20-8-2006	                 #
+#                                                                                #
+##################################################################################
+*/
+
+
+
+
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -1096,7 +1112,9 @@ int sayWBW(char * sentance){
                 indent=0;
         }
         //PrintOutput();
-
+        //sapce for new line
+        char CRspace[]={PA4,PA4,0};
+        AddtoOutput(CRspace);
 }
 
 

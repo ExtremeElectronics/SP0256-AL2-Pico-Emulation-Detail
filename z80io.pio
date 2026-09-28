@@ -1,0 +1,69 @@
+.program z80io
+.side_set 1 // one side bit required for every instruction
+
+.wrap_target
+
+  mov osr,null side 0    // make inputs, wait
+  out pindirs,8 side 0   // make data inputs
+
+  wait 0 GPIO 15 side 0  // got NOTIOEN -low
+
+  nop side 1 [5]		// wait for stable
+
+read_in:
+
+  mov isr,null side 1    // clear isr
+  in pins,13 side 1      // read 13 pins (8 data, 2 control, 3 address)   
+  push noblock side 1    // send to inFIFO
+
+  jmp pin z80write side 1 // rd high= write from z80 = read here
+
+z80read:		 //pico SENDS data
+  mov osr,!null side 1
+  out pindirs,8 side 1   // make data outputs
+
+  irq wait 5 side 1      // z80read from reg flags int5 
+  pull noblock side 1    // read value to output from FiFo
+  out pins,8 side 1      // output outFIFO to data
+
+  nop side 1 [5]         // output settle time
+  nop side 1 [5]         // output settle time
+
+  jmp done side 1	       // no wait needed after write
+
+z80write:               // pico READS data 
+  irq wait 6 side 1     // z80 write no need for wait.
+
+done:
+
+
+  wait 1 GPIO 15 side 0  // wait for enable high
+
+
+.wrap		       // rince and repeat 
+
+%c-sdk {
+static inline void z80io_init(PIO pio, uint sm, uint offset, float freq) {
+        pio_sm_config c = z80io_program_get_default_config(offset);
+        for (int i=0;i<13;i++){
+          pio_gpio_init(pio, 6+i); //assign pins to pio control
+        }
+        pio_sm_set_consecutive_pindirs(pio, sm, 6, 13, false);  //8x data,2x ctrl,3x address
+        sm_config_set_out_pins(&c, 6, 8); //assidn data as out too
+
+        pio_gpio_init(pio, 28); //wait pin assigned to pio
+        pio_sm_set_consecutive_pindirs(pio, sm, 28, 1, true); //set wait as output
+
+        sm_config_set_clkdiv(&c, freq);
+        sm_config_set_out_shift(&c, true, true, 8);
+        sm_config_set_in_shift(&c, false, true, 32);
+        sm_config_set_sideset_pins(&c, 28); //sideset wait
+        sm_config_set_sideset(&c, 1, false, false);
+        sm_config_set_in_pins(&c, 6);
+        sm_config_set_jmp_pin(&c, 14);
+
+        pio_sm_init(pio, sm, offset, &c);
+//	pio_set_irq0_source_enabled(pio, pis_interrupt0, true);
+}
+%}
+
